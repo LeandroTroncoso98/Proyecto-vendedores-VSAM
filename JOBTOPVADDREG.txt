@@ -1,0 +1,39 @@
+//JSTOVSM1  JOB 1,REGION=0M,CLASS=A,MSGCLASS=A,MSGLEVEL=1,
+//          NOTIFY=Z38891
+//STEP001   EXEC PGM=IDCAMS
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+  DEL Z38891.CURSO.COBOL.VSAM.ERRORES
+  SET MAXCC=0
+//**********************************************************************
+//*************** GENERO EL VSAM DONDE GUARDARE LA MIGRACION ***********
+//**********************************************************************
+//STEP002   EXEC PGM=IDCAMS
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+  DELETE Z38891.CURSO.COBOL.VSAM.LISTVSM -
+  CLUSTER
+  SET MAXCC=0
+  DEFINE CLUSTER ( -
+   NAME(Z38891.CURSO.COBOL.VSAM.LISTVSM) -
+   INDEXED -
+   TRACKS(5 1) -
+   RECSZ(77 77) -
+   CISZ(27972) -
+   KEY(5 0) -
+   SHR(2 3) -
+   FSPC(15 15))
+//**********************************************************************
+//*************** EJECUTO EL PROGRAMA PARA MIGRAR LOS DATOS ************
+//**********************************************************************
+//STEP003   EXEC PGM=PVADDREG
+//STEPLIB   DD DSN=Z38891.CURSO.LOADLIB,DISP=SHR
+//SYSPRINT  DD SYSOUT=*
+//ENTRADA   DD DSN=Z38891.CURSO.COBOL.VSAM.EMPLEADO,DISP=SHR
+//SALIDA    DD DSN=Z38891.CURSO.COBOL.VSAM.LISTVSM,DISP=SHR
+//ERRORES   DD DSN=Z38891.CURSO.COBOL.VSAM.ERRORES,
+//             DISP=(NEW,CATLG,DELETE),
+//             DCB=(DSORG=PS,RECFM=FB,LRECL=36,BLKSIZE=3600),
+//             SPACE=(TRK,(5,1),RLSE)
+/*
+
