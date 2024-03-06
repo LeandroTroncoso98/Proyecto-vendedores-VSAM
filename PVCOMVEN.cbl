@@ -163,7 +163,7 @@
        0400-READ-FILES.
            READ F-EMPLEADOS
            READ F-VENTAS.
-
+      *Utilizamos el metodo de cruce de archivos para almacenar la informacion de cada empleado
        0500-COMPARE-LEG.
            IF R-EMP-LEGAJO = R-VENTA-LEGAJO THEN
               DISPLAY "ENTRE LEG:" R-EMP-LEGAJO
@@ -178,7 +178,7 @@
                  PERFORM 0510-WRITE-DATA
               END-IF
            END-IF.
-
+      *Funcion que se encarga de mover los datos a las variables correspondientes antes de escribir
        0510-WRITE-DATA.
            COMPUTE
             WS-CALCULAR-COMIS = WS-CALCULAR-TOTAL * 0,13
