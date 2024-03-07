@@ -1,0 +1,28 @@
+//JVCOMVE1  JOB 1,REGION=0M,CLASS=A,MSGCLASS=A,MSGLEVEL=1,    
+//         NOTIFY=Z38891                                      
+//STEP001   EXEC PGM=IDCAMS                                   
+//SYSPRINT  DD SYSOUT=*                                       
+//SYSIN     DD *                                              
+ DEL Z38891.CURSO.COBOL.VSAM.RESUMEN                          
+ SET MAXCC=0                                                  
+/*
+//*ORDENAMOS PARA REALIZAR POSTERIORMENTE EL APAREO DE ARCHIVOS                                                            
+//STEP002   EXEC PGM=SORT                                     
+//SYSPRINT  DD SYSOUT=*                                       
+//SYSOUT    DD SYSOUT=*                                       
+//SORTIN    DD DSN=Z38891.CURSO.COBOL.VSAM.VENTAS,DISP=SHR    
+//SORTOUT   DD DSN=Z38891.CURSO.COBOL.VSAM.ORDER,             
+//             DISP=(NEW,PASS,DELETE),                        
+//             DCB=(DSORG=PS,RECFM=FB,LRECL=21,BLKSIZE=21000),
+//             SPACE=(CYL,(1,1),RLSE)                         
+//SYSIN     DD *                                              
+ SORT FIELDS=(1,5,CH,A)                                       
+/*                                                            
+//STEP003   EXEC PGM=PVCOMVEN                                 
+//STEPLIB   DD DSN=Z38891.CURSO.LOADLIB,DISP=SHR              
+//SYSPRINT  DD SYSOUT=*                                       
+//EMPLEADO  DD DSN=Z38891.CURSO.COBOL.VSAM.LISTVSM,DISP=SHR   
+//VENTAS    DD DSN=Z38891.CURSO.COBOL.VSAM.ORDER,DISP=SHR     
+//RESUMEN   DD DSN=Z38891.CURSO.COBOL.VSAM.RESUMEN,           
+//             DISP=(NEW,CATLG,DELETE),                       
+//             SPACE=(TRK,(1,1),RLSE)                         
