@@ -42,5 +42,4 @@ PROGRAMA PVINFVTA: Genera un informe de venta del usuario ingresado por SYSIN en
 <br />
 PROGRAMA PVCOMVEN: Genera un detalle general de las ventas que realizo cada empleado y cuando comision va obtener segun sus ventas.
 <br />
-PROGRAMA VERFECH: Sub programa que se ocupa de detectar si una fecha ingresada es valida o no, en formato: DDMMYYYY.
-![Bisiesto](https://github.com/LeandroTroncoso98/Proyecto-vendedores-VSAM/assets/105368488/66141163-9e59-414e-8cb6-33e707819850)
+PROGRAMA VERFECH: Sub programa que se ocupa de detectar si una fecha ingresada es valida o no, en formato: DDMMYYYY.![Bisiesto](https://github.com/LeandroTroncoso98/Proyecto-vendedores-VSAM/assets/105368488/2aee4226-e9bb-420e-89d6-b240e2d3f422)
