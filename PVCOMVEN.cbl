@@ -67,6 +67,8 @@
 
        01 FS-RESUMEN              PIC 99.
 
+       77 WS-VALIDAR              PIC X.
+
        01 WS-GUIONES.
           05 FILLER               PIC X VALUE SPACE.
           05 FILLER               PIC X(78) VALUE ALL '-'.
@@ -135,6 +137,8 @@
 
           77 WS-CALCULAR-COMIS    PIC 9(7)V99.
 
+          77 WS-SVERFECH          PIC X(08) VALUE 'VERFECH'.
+
 
        PROCEDURE DIVISION.
        0100-INIT-PROGRAM.
@@ -163,14 +167,19 @@
        0400-READ-FILES.
            READ F-EMPLEADOS
            READ F-VENTAS.
-      *Utilizamos el metodo de cruce de archivos para almacenar la informacion de cada empleado
+
        0500-COMPARE-LEG.
            IF R-EMP-LEGAJO = R-VENTA-LEGAJO THEN
-              DISPLAY "ENTRE LEG:" R-EMP-LEGAJO
-              ADD R-VENTA-MONTO TO WS-CALCULAR-TOTAL
-              ADD 1 TO WS-EMP-VENTAS
-              ADD 1 TO WS-CANT-VENT
-              READ F-VENTAS
+              CALL WS-SVERFECH USING R-VENTA-FECHA, WS-VALIDAR
+              IF WS-VALIDAR = "S" THEN
+                 ADD R-VENTA-MONTO TO WS-CALCULAR-TOTAL
+                 ADD 1 TO WS-EMP-VENTAS
+                 ADD 1 TO WS-CANT-VENT
+              ELSE
+                 DISPLAY "FECHA ERRONEA:" R-VENTA-FECHA
+                         " LEGAJO:" R-EMP-LEGAJO
+              END-IF
+                 READ F-VENTAS
            ELSE
               IF R-EMP-LEGAJO > R-VENTA-LEGAJO THEN
                  READ F-VENTAS
@@ -178,7 +187,7 @@
                  PERFORM 0510-WRITE-DATA
               END-IF
            END-IF.
-      *Funcion que se encarga de mover los datos a las variables correspondientes antes de escribir
+
        0510-WRITE-DATA.
            COMPUTE
             WS-CALCULAR-COMIS = WS-CALCULAR-TOTAL * 0,13
